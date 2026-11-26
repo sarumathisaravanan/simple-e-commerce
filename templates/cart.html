@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Cart{% endblock %}
+{% block content %}
+<h1>Your cart</h1>
+{% if items %}
+<table>
+  <thead><tr><th>Product</th><th>Price</th><th>Quantity</th><th>Subtotal</th><th></th></tr></thead>
+  <tbody>
+  {% for it in items %}
+    <tr>
+      <td>{{ it.product.emoji }} {{ it.product.name }}</td>
+      <td>₹{{ "{:,.0f}".format(it.product.price) }}</td>
+      <td>
+        <form class="inline" action="{{ url_for('update_cart', pid=it.product.id) }}" method="post">
+          <input type="number" name="qty" value="{{ it.qty }}" min="0" class="qty">
+          <button type="submit" class="secondary">Update</button>
+        </form>
+      </td>
+      <td>₹{{ "{:,.0f}".format(it.subtotal) }}</td>
+      <td>
+        <form action="{{ url_for('remove_from_cart', pid=it.product.id) }}" method="post">
+          <button type="submit" class="link">Remove</button>
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<p class="total">Total: ₹{{ "{:,.0f}".format(total) }}</p>
+<a class="btn" href="{{ url_for('checkout') }}">Proceed to checkout</a>
+{% else %}
+<p class="muted">Your cart is empty. <a href="{{ url_for('index') }}">Browse products</a></p>
+{% endif %}
+{% endblock %}

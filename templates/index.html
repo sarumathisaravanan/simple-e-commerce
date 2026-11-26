@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="filters">
+  <a class="chip {{ 'active' if not selected }}" href="{{ url_for('index', q=q) }}">All</a>
+  {% for c in categories %}
+    <a class="chip {{ 'active' if selected == c }}" href="{{ url_for('index', category=c, q=q) }}">{{ c }}</a>
+  {% endfor %}
+</div>
+
+{% if products %}
+<div class="grid">
+  {% for p in products %}
+  <div class="card">
+    <a href="{{ url_for('product_detail', pid=p.id) }}" class="emoji">{{ p.emoji }}</a>
+    <h3><a href="{{ url_for('product_detail', pid=p.id) }}">{{ p.name }}</a></h3>
+    <p class="muted">{{ p.category }}</p>
+    <p class="price">₹{{ "{:,.0f}".format(p.price) }}</p>
+    <form action="{{ url_for('add_to_cart', pid=p.id) }}" method="post">
+      <button type="submit">Add to cart</button>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+  <p class="muted">No products match your search.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Orders{% endblock %}
+{% block content %}
+<h1>All orders</h1>
+{% if orders %}
+<table>
+  <thead><tr><th>Order</th><th>Customer</th><th>Email</th><th>Total</th><th>Date</th></tr></thead>
+  <tbody>
+  {% for o in orders %}
+    <tr>
+      <td>#{{ o.id }}</td><td>{{ o.customer_name }}</td><td>{{ o.email }}</td>
+      <td>₹{{ "{:,.0f}".format(o.total) }}</td><td>{{ o.created_at }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="muted">No orders yet.</p>
+{% endif %}
+{% endblock %}
